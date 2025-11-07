@@ -31,7 +31,7 @@ async function handleCheckWeather(agent) {
 const params = agent.parameters || {};
 const city = params['geo-city'] || params['place'] || params['city'] || '';
 
-```
+
 if (!city) {  
   agent.add("Which city would you like the weather for?");  
   return;  
@@ -39,12 +39,16 @@ if (!city) {
 
 try {  
   const w = await weatherService.getCurrentWeatherByCity(city);  
-  agent.add(`Weather in ${w.city}: ${w.description}. Temperature: ${w.temp_celsius}°C (feels like ${w.feels_like_celsius}°C). Humidity ${w.humidity}%.`);  
+  agent.add(
+    "Weather in " + w.city +
+    ": " + w.description +
+    ". Temperature: " + w.temp_celsius + "°C (feels like " + w.feels_like_celsius + "°C). Humidity " + w.humidity + "%."
+  );  
 } catch (err) {  
   console.error(err);  
   agent.add("Sorry, I couldn't fetch the weather right now. Try again later.");  
 }  
-```
+
 
 }
 
