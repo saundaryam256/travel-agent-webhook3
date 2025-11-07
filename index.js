@@ -25,8 +25,10 @@ agent.add("Sorry, I didn't get that. Can you rephrase?");
 // Check Weather intent
 async function handleCheckWeather(agent) {
 const params = agent.parameters || {};
-const city = params['geo-city'] || params['place'] || params['city'] || '';
 
+
+// Use geo-city if available, otherwise fallback to city  
+const city = params['geo-city'] || params['city'] || '';  
 
 if (!city) {  
   agent.add("Which city would you like the weather for?");  
@@ -34,7 +36,7 @@ if (!city) {
 }  
 
 try {  
-  // Test weather data  
+  // Test weather data (replace with real API later)  
   const w = {  
     city: city,  
     description: "Sunny",  
@@ -44,9 +46,7 @@ try {
   };  
 
   agent.add(  
-    "Weather in " + w.city +  
-    ": " + w.description +  
-    ". Temperature: " + w.temp_celsius + "°C (feels like " + w.feels_like_celsius + "°C). Humidity " + w.humidity + "%."  
+    `Weather in ${w.city}: ${w.description}. Temperature: ${w.temp_celsius}°C (feels like ${w.feels_like_celsius}°C). Humidity ${w.humidity}%.`  
   );  
 } catch (err) {  
   console.error(err);  
