@@ -3,11 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { WebhookClient } = require('dialogflow-fulfillment');
 
-const weatherService = require('./services/weather');
-const flightService = require('./services/flights');
-
 const app = express();
-// ✅ Correct PORT fallback for Render
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 app.use(bodyParser.json());
@@ -38,11 +34,19 @@ if (!city) {
 }  
 
 try {  
-  const w = await weatherService.getCurrentWeatherByCity(city);  
-  agent.add(
-    "Weather in " + w.city +
-    ": " + w.description +
-    ". Temperature: " + w.temp_celsius + "°C (feels like " + w.feels_like_celsius + "°C). Humidity " + w.humidity + "%."
+  // Test weather data  
+  const w = {  
+    city: city,  
+    description: "Sunny",  
+    temp_celsius: 30,  
+    feels_like_celsius: 32,  
+    humidity: 60  
+  };  
+
+  agent.add(  
+    "Weather in " + w.city +  
+    ": " + w.description +  
+    ". Temperature: " + w.temp_celsius + "°C (feels like " + w.feels_like_celsius + "°C). Humidity " + w.humidity + "%."  
   );  
 } catch (err) {  
   console.error(err);  
@@ -57,7 +61,7 @@ let intentMap = new Map();
 intentMap.set('Default Fallback Intent', defaultFallback);
 intentMap.set('Check Weather', handleCheckWeather);
 
-agent.handleRequest(intentMap);
+await agent.handleRequest(intentMap);
 });
 
 // Bind to 0.0.0.0 for Render deployment
