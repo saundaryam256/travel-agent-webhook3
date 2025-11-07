@@ -24,11 +24,11 @@ agent.add("Sorry, I didn't get that. Can you rephrase?");
 
 // Check Weather intent (CX-compatible)
 async function handleCheckWeather(agent) {
-// In Dialogflow CX, parameters are under sessionInfo.parameters
-const params = req.body?.sessionInfo?.parameters || {};
+// Log all parameters received from Dialogflow CX
+console.log("CX parameters received:", req.body?.sessionInfo?.parameters);
 
 
-// Use geo-city if available, otherwise fallback to city  
+const params = req.body?.sessionInfo?.parameters || {};  
 const city = params['geo-city'] || params['city'] || '';  
 
 if (!city) {  
@@ -57,8 +57,8 @@ try {
 
 }
 
-// Intent map
-let intentMap = new Map();
+// Map intents to handlers
+const intentMap = new Map();
 intentMap.set('Default Fallback Intent', defaultFallback);
 intentMap.set('Check Weather', handleCheckWeather);
 
