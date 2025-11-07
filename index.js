@@ -10,10 +10,10 @@ app.use(bodyParser.json());
 
 // Root route (health check)
 app.get('/', (req, res) => {
-res.send('🌍 Dialogflow Travel Webhook is running!');
+res.send('🌍 Dialogflow CX Travel Webhook is running!');
 });
 
-// Webhook endpoint for Dialogflow
+// Webhook endpoint for Dialogflow CX
 app.post('/webhook', async (req, res) => {
 const agent = new WebhookClient({ request: req, response: res });
 
@@ -22,9 +22,10 @@ function defaultFallback(agent) {
 agent.add("Sorry, I didn't get that. Can you rephrase?");
 }
 
-// Check Weather intent
+// Check Weather intent (CX-compatible)
 async function handleCheckWeather(agent) {
-const params = agent.parameters || {};
+// In Dialogflow CX, parameters are under sessionInfo.parameters
+const params = req.body?.sessionInfo?.parameters || {};
 
 
 // Use geo-city if available, otherwise fallback to city  
