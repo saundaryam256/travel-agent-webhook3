@@ -7,7 +7,8 @@ const weatherService = require('./services/weather');
 const flightService = require('./services/flights');
 
 const app = express();
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+// ✅ Correct PORT fallback for Render
+const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 app.use(bodyParser.json());
 
@@ -30,7 +31,7 @@ async function handleCheckWeather(agent) {
 const params = agent.parameters || {};
 const city = params['geo-city'] || params['place'] || params['city'] || '';
 
-
+```
 if (!city) {  
   agent.add("Which city would you like the weather for?");  
   return;  
@@ -43,7 +44,7 @@ try {
   console.error(err);  
   agent.add("Sorry, I couldn't fetch the weather right now. Try again later.");  
 }  
-
+```
 
 }
 
